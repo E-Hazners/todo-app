@@ -1,38 +1,479 @@
-.App {
-  text-align: center;
+/* CSS Variables for Themes */
+:root {
+    --bg-color: #f0f4f8;
+    --text-color: #1a237e;
+    --header-color: #303f9f;
+    --input-border: #c5cae9;
+    --tab-bg: #e8eaf6;
+    --tab-hover: #c5cae9;
+    --tab-active-bg: #ffffff;
+    --tab-active-border: #3f51b5;
+    --section-bg: #ffffff;
+    --task-bg: #fafafa;
+    --task-border: #e8eaf6;
+    --completed-text: #9e9e9e;
+    --button-bg: linear-gradient(135deg, #3f51b5, #303f9f);
+    --button-hover: linear-gradient(135deg, #303f9f, #3f51b5);
+    --add-task-bg: linear-gradient(135deg, #4caf50, #66bb6a);
+    --toggle-bg: linear-gradient(135deg, #7e57c2, #9575cd);
+    --toggle-hover: linear-gradient(135deg, #9575cd, #7e57c2);
+    --edit-bg: #ffca28;
+    --edit-hover: #ffb300;
+    --remove-bg: #ef5350;
+    --remove-hover: #f44336;
+    --progress-bg: #e0e0e0;
+    --progress-fill: linear-gradient(90deg, #4caf50, #8bc34a);
+    --shadow: rgba(0, 0, 0, 0.1);
+    --checkbox-border: #bdbdbd;
+    --checkbox-checked: #4caf50;
+    --priority-high: red;
+    --priority-medium: orange;
+    --priority-low: green;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.dark {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --header-color: #bb86fc;
+    --input-border: #424242;
+    --tab-bg: #1e1e1e;
+    --tab-hover: #333333;
+    --tab-active-bg: #212121;
+    --tab-active-border: #bb86fc;
+    --section-bg: #1e1e1e;
+    --task-bg: #2c2c2c;
+    --task-border: #424242;
+    --completed-text: #757575;
+    --button-bg: linear-gradient(135deg, #6200ea, #3700b3);
+    --button-hover: linear-gradient(135deg, #3700b3, #6200ea);
+    --add-task-bg: linear-gradient(135deg, #03dac6, #018786);
+    --toggle-bg: linear-gradient(135deg, #bb86fc, #6200ea);
+    --toggle-hover: linear-gradient(135deg, #6200ea, #bb86fc);
+    --edit-bg: #cf6679;
+    --edit-hover: #b00020;
+    --remove-bg: #cf6679;
+    --remove-hover: #b00020;
+    --progress-bg: #424242;
+    --progress-fill: linear-gradient(90deg, #03dac6, #00b0ff);
+    --shadow: rgba(255, 255, 255, 0.1);
+    --checkbox-border: #757575;
+    --checkbox-checked: #03dac6;
+    --priority-high: #ff4d4d;
+    --priority-medium: #ff9f40;
+    --priority-low: #4caf50;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.app {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: var(--bg-color);
+    border-radius: 16px;
+    box-shadow: 0 8px 16px var(--shadow);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-color);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+h1 {
+    text-align: center;
+    color: var(--text-color);
+    font-weight: bold;
 }
 
-.App-link {
-  color: #61dafb;
+h2 {
+    color: var(--header-color);
+    margin-top: 20px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.theme-toggle {
+    display: block;
+    margin: 0 auto 20px;
+    padding: 10px 16px;
+    background: var(--toggle-bg);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+    .theme-toggle:hover {
+        background: var(--toggle-hover);
+    }
+
+.category-management {
+    display: flex;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+    .category-management input {
+        flex: 1;
+        padding: 12px;
+        border: 1px solid var(--input-border);
+        border-radius: 8px;
+        font-size: 16px;
+        background-color: var(--section-bg);
+        color: var(--text-color);
+    }
+
+    .category-management button {
+        padding: 12px 20px;
+        background: var(--button-bg);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: transform 0.2s, background 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+        .category-management button:hover {
+            transform: scale(1.05);
+            background: var(--button-hover);
+        }
+
+.category-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    overflow-x: auto;
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--task-border);
+}
+
+.tab {
+    padding: 12px 20px;
+    margin: 0 5px 0 0;
+    background-color: var(--tab-bg);
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    color: var(--text-color);
+}
+
+    .tab.active {
+        background-color: var(--tab-active-bg);
+        border-bottom: 3px solid var(--tab-active-border);
+        font-weight: bold;
+    }
+
+    .tab:hover {
+        background-color: var(--tab-hover);
+        transform: translateY(-2px);
+    }
+
+    .tab input {
+        margin-right: 8px;
+        padding: 8px;
+        background-color: var(--section-bg);
+        color: var(--text-color);
+        border: 1px solid var(--input-border);
+    }
+
+.edit-btn, .remove-btn {
+    margin-left: 10px;
+    padding: 6px 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.edit-btn {
+    background-color: var(--edit-bg);
+    color: #212121;
+}
+
+    .edit-btn:hover {
+        background-color: var(--edit-hover);
+    }
+
+.remove-btn {
+    background-color: var(--remove-bg);
+}
+
+    .remove-btn:hover {
+        background-color: var(--remove-hover);
+    }
+
+.task-section {
+    background-color: var(--section-bg);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px var(--shadow);
+}
+
+.progress-bar {
+    height: 8px;
+    background-color: var(--progress-bg);
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.progress {
+    height: 100%;
+    background: var(--progress-fill);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.input-container {
+    display: flex;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+    .input-container input[type="text"] {
+        flex: 2;
+        padding: 12px;
+        border: 1px solid var(--input-border);
+        border-radius: 8px 0 0 8px;
+        font-size: 16px;
+        background-color: var(--section-bg);
+        color: var(--text-color);
+    }
+
+    .input-container select {
+        flex: 1;
+        padding: 12px;
+        border: 1px solid var(--input-border);
+        border-radius: 0;
+        font-size: 16px;
+        background-color: var(--section-bg);
+        color: var(--text-color);
+    }
+
+    .input-container input[type="date"] {
+        flex: 1;
+        padding: 12px;
+        border: 1px solid var(--input-border);
+        border-radius: 0 8px 8px 0;
+        font-size: 16px;
+        background-color: var(--section-bg);
+        color: var(--text-color);
+    }
+
+    .input-container button {
+        padding: 12px 20px;
+        background: var(--add-task-bg);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: transform 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+        .input-container button:hover {
+            transform: scale(1.05);
+        }
+
+.toggle-btn {
+    padding: 10px 16px;
+    background: var(--toggle-bg);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    display: block;
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto 20px;
+    transition: background 0.3s;
+}
+
+    .toggle-btn:hover {
+        background: var(--toggle-hover);
+    }
+
+.task-list {
+    list-style: none;
+    padding: 0;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    background-color: var(--task-bg);
+    margin: 12px 0;
+    padding: 12px;
+    border: 1px solid var(--task-border);
+    border-radius: 8px;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.2s;
+    cursor: grab;
+}
+
+    .task-item:active {
+        cursor: grabbing;
+    }
+
+    .task-item:hover {
+        box-shadow: 0 4px 8px var(--shadow);
+    }
+
+    .task-item.completed {
+        text-decoration: line-through;
+        color: var(--completed-text);
+    }
+
+.task-text {
+    flex: 2;
+    margin-right: 10px;
+}
+
+.task-priority {
+    flex: 1;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.task-due-date {
+    flex: 1;
+    color: var(--text-color);
+    font-style: italic;
+}
+
+.task-item button {
+    margin-left: auto;
+    padding: 8px 12px;
+    background-color: var(--remove-bg);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+    .task-item button:hover {
+        background-color: var(--remove-hover);
+    }
+
+/* Enhanced Custom Checkbox */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-right: 12px;
+    cursor: pointer;
+    position: relative;
+}
+
+    .checkbox-container input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+.checkmark {
+    width: 20px;
+    height: 20px;
+    background-color: var(--section-bg);
+    border: 2px solid var(--checkbox-border);
+    border-radius: 4px;
+    display: inline-block;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.checkbox-container:hover .checkmark {
+    border-color: var(--checkbox-checked);
+}
+
+.checkbox-container input:checked ~ .checkmark {
+    background-color: var(--checkbox-checked);
+    border-color: var(--checkbox-checked);
+    transform: scale(1.1);
+}
+
+    .checkbox-container input:checked ~ .checkmark::after {
+        content: '';
+        position: absolute;
+        left: 4px;
+        top: 0px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        transform: rotate(45deg);
+        opacity: 1;
+        transition: opacity 0.3s ease;
+    }
+
+.checkbox-container .checkmark::after {
+    opacity: 0;
+}
+
+/* Animations */
+.task-item {
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Media Queries */
+@media (max-width: 600px) {
+    .app {
+        padding: 15px;
+        margin: 20px;
+    }
+
+    .category-management, .input-container {
+        flex-direction: column;
+    }
+
+        .category-management input, .input-container input, .input-container select, .input-container input[type="date"] {
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .category-management button, .input-container button {
+            border-radius: 8px;
+            width: 100%;
+        }
+
+    .category-tabs {
+        flex-direction: column;
+        overflow-x: visible;
+    }
+
+    .tab {
+        margin: 5px 0;
+        border-radius: 8px;
+    }
+
+    .toggle-btn {
+        width: 100%;
+    }
+
+    .theme-toggle {
+        width: 100%;
+    }
 }
